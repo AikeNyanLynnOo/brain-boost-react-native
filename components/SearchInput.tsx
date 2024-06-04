@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { router, usePathname } from "expo-router";
 import { View, TouchableOpacity, Image, TextInput, Alert } from "react-native";
+import Toast from "react-native-toast-message";
 
 import { icons, styles } from "../constants";
 
@@ -31,6 +32,10 @@ const SearchInput = ({ initialQuery, placeholder }: InitialQueryPropType) => {
               "Please input something to search results across database"
             );
 
+          Toast.show({
+            type: "info",
+            text1: "Upcoming feature...",
+          });
           // for later
           //   if (pathname.startsWith("/search")) router.setParams({ query });
           //   else router.push(`/search/${query}`);
@@ -38,6 +43,7 @@ const SearchInput = ({ initialQuery, placeholder }: InitialQueryPropType) => {
       >
         <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />
       </TouchableOpacity>
+      
     </View>
   );
 };

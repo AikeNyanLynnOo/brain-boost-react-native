@@ -1,3 +1,4 @@
+import { BACKEND_BASE_URL } from "@env";
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -5,6 +6,8 @@ import { images } from "../../constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
+import Toast from "react-native-toast-message";
+import { makeRequest } from "../../utils/makeRequest";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -16,21 +19,49 @@ const SignUp = () => {
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const handleSignIn = () => {
-    // if (form.email === "" || form.password === "") {
-    //   Alert.alert("Error", "Please fill in all fields");
-    // }
+  const onToastHide = () => {
+    success && router.replace("/sign-in");
+  };
 
-    setSubmitting(true);
-
+  const handleSignUp = () => {
     try {
-      setTimeout(() => {
-        Alert.alert("Success", "User signed up successfully");
-        router.replace("/sign-in");
-      }, 1000);
+      makeRequest({
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${BACKEND_BASE_URL}/auth/register`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify({
+          first_name: form.firstName,
+          last_name: form.lastName,
+          email: form.email,
+          password: form.password,
+          confirm_password: form.confirmPassword,
+        }),
+      }).then((res) => {
+        if (res && res.success) {
+          setSuccess(true);
+          return Toast.show({
+            type: "success",
+            text1: `Sign up successfully`,
+          });
+        }
+        setSuccess(false);
+        console.log(res);
+        Toast.show({
+          type: "error",
+          text1: res?.statusText,
+          text2: res?.message,
+        });
+      });
     } catch (error: any) {
-      Alert.alert("Error", error.message);
+      Toast.show({
+        type: "error",
+        text1: `Sign Up Error`,
+      });
     }
   };
 
@@ -93,7 +124,7 @@ const SignUp = () => {
           />
           <CustomButton
             title="Sign Up"
-            handlePress={handleSignIn}
+            handlePress={handleSignUp}
             isLoading={submitting}
             containerStyles="w-full mt-10"
           />
@@ -109,6 +140,12 @@ const SignUp = () => {
             </Link>
           </View>
         </View>
+        <Toast
+          onHide={onToastHide}
+          position="bottom"
+          visibilityTime={1500}
+          bottomOffset={20}
+        />
       </ScrollView>
     </SafeAreaView>
   );

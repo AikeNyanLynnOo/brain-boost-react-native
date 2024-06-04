@@ -11,11 +11,11 @@ export interface ResponseType {
 export const makeRequest = async (config: any) => {
   try {
     const response = await axios(config);
-    // console.log("Response>>", response);
+    console.log("Response>>", response.data);
     const resData = response.data;
     return {
       status: resData.status,
-      statusText: resData.statusText,
+      statusText: (resData && resData.statusText) || "",
       success: (resData && resData.success) || false,
       message: (resData && resData.message) || "Custom Message",
       data: (resData && resData.data) || null,
@@ -30,8 +30,7 @@ export const makeRequest = async (config: any) => {
         error.response.statusText,
         error.response.data.message && error.response.data.message
       );
-      const { status, statusText } = error.response;
-      const { success } = error.response.data;
+      const { status, statusText, success } = error.response.data;
       return {
         status,
         statusText,

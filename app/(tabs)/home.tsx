@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { BACKEND_BASE_URL, ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from "@env";
+
+import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 
@@ -6,12 +8,16 @@ import { icons, images, styles } from "../../constants";
 import EmptyState from "../../components/EmptyState";
 import SearchInput from "../../components/SearchInput";
 import { StatusBar } from "expo-status-bar";
-import { courses, trendingCourses } from "@/constants/courses";
+// import { courses, trendingCourses } from "@/constants/courses";
 import CourseCard from "@/components/CourseCard";
 import TrendingCourses from "@/components/TrendingCourses";
+import Toast from "react-native-toast-message";
+import { useFetch } from "../../hooks/useFetch";
 
 const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
+
+  const { data, isLoading, error } = useFetch(`${BACKEND_BASE_URL}/courses`);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -31,12 +37,17 @@ const Home = () => {
     <>
       <SafeAreaView className="bg-primary h-full">
         <FlatList
-          data={courses.map((course, index) => ({
-            ...course,
-            id: index,
-          }))}
+          data={
+            (data &&
+              data.length > 0 &&
+              data.map((course: any, index: number) => ({
+                ...course,
+                id: index,
+              }))) ||
+            []
+          }
           keyExtractor={(item: { id: number }, index: number) => `${item.id}`}
-          renderItem={({ item }) => (
+          renderItem={({ item }: { item: any }) => (
             <CourseCard
               title={item.title}
               thumbnail={item.image}
@@ -76,11 +87,12 @@ const Home = () => {
 
                 <TrendingCourses
                   posts={
-                    (trendingCourses &&
-                      trendingCourses.map((course, index) => ({
+                    (data &&
+                      data.length > 0 &&
+                      data.slice(0, 5).map((course: any, index: number) => ({
                         ...course,
                         id: index,
-                      }))) ??
+                      }))) ||
                     []
                   }
                 />
@@ -99,6 +111,7 @@ const Home = () => {
         />
       </SafeAreaView>
       <StatusBar backgroundColor={styles.colors.primary} style="light" />
+      <Toast position="bottom" visibilityTime={1500} bottomOffset={25} />
     </>
   );
 };

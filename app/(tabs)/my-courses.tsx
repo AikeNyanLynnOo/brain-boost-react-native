@@ -1,5 +1,7 @@
+import { BACKEND_BASE_URL, ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from "@env";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 
 import { icons, images, styles } from "../../constants";
@@ -10,9 +12,12 @@ import { courses, trendingCourses } from "@/constants/courses";
 import CourseCard from "@/components/CourseCard";
 import TrendingCourses from "@/components/TrendingCourses";
 
+import { useFetch } from "../../hooks/useFetch";
+import Toast from "react-native-toast-message";
+
 const MyCourses = () => {
   const [refreshing, setRefreshing] = useState(false);
-
+  const { data, isLoading, error } = useFetch(`${BACKEND_BASE_URL}/courses`);
   const onRefresh = async () => {
     setRefreshing(true);
     // await refetch();
@@ -31,13 +36,17 @@ const MyCourses = () => {
     <>
       <SafeAreaView className="bg-primary h-full">
         <FlatList
-          data={courses.map((course, index) => ({
-            ...course,
-            id: index,
-          }))}
+          data={
+            data &&
+            data.length > 0 &&
+            data.map((course: any, index: number) => ({
+              ...course,
+              id: index,
+            }))
+          }
           stickyHeaderIndices={[0]}
           keyExtractor={(item: { id: number }, index: number) => `${item.id}`}
-          renderItem={({ item }) => (
+          renderItem={({ item }: { item: any }) => (
             <CourseCard
               title={item.title}
               thumbnail={item.image}
@@ -73,6 +82,7 @@ const MyCourses = () => {
         />
       </SafeAreaView>
       <StatusBar backgroundColor={styles.colors.primary} style="light" />
+      <Toast position="bottom" visibilityTime={1500} bottomOffset={25} />
     </>
   );
 };

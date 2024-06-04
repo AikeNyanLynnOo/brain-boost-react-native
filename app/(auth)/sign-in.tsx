@@ -1,5 +1,4 @@
-import { BACKEND_BASE_URL } from "@env";
-
+import { BACKEND_BASE_URL, ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from "@env";
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,6 +8,7 @@ import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
 import Toast from "react-native-toast-message";
 import { ResponseType, makeRequest } from "../../utils/makeRequest";
+import { setToken } from "../../utils/tokenManager";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -20,12 +20,10 @@ const SignIn = () => {
   const [success, setSuccess] = useState(false);
 
   const onToastHide = () => {
-    router.replace("/home");
+    success && router.replace("/home");
   };
 
   const handleSignIn = () => {
-    // setSubmitting(true);
-    // console.log("URL>>", `${BACKEND_BASE_URL}/auth/login`);
     try {
       makeRequest({
         method: "post",
@@ -37,14 +35,28 @@ const SignIn = () => {
         data: JSON.stringify(form),
       }).then((res) => {
         if (res && res.success) {
-          Toast.show({
+          setSuccess(true);
+          const { accessToken, refreshToken } = res.data;
+          setToken(ACCESS_TOKEN_NAME, accessToken);
+          setToken(REFRESH_TOKEN_NAME, refreshToken);
+          return Toast.show({
             type: "success",
             text1: `Sign in successfully`,
           });
         }
+        setSuccess(false);
+        console.log(res);
+        Toast.show({
+          type: "error",
+          text1: res?.statusText,
+          text2: res?.message,
+        });
       });
     } catch (error: any) {
-      Alert.alert("Error", error.message);
+      Toast.show({
+        type: "error",
+        text1: `Sign In Error`,
+      });
     }
   };
 

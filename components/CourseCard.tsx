@@ -9,6 +9,7 @@ import {
 
 import { icons } from "../constants";
 import CustomButton from "./CustomButton";
+import Toast from "react-native-toast-message";
 
 export interface CourseCardPropType {
   title: string;
@@ -46,7 +47,7 @@ const CourseCard = ({
             />
           </TouchableOpacity>
           <View className="flex justify-between flex-row">
-            <View className="flex-1 border">
+            <View className="flex-1">
               <Text
                 className="font-psemibold text-sm text-white"
                 numberOfLines={1}
@@ -79,7 +80,13 @@ const CourseCard = ({
             <CustomButton
               title={enrolled ? "Enrolled" : "Enroll"}
               icon={enrolled ? icons.done : null}
-              handlePress={() => {}}
+              handlePress={() => {
+                Toast.show({
+                  type : "info",
+                  text1 : "Upcoming feature...",
+                  text2 : "Under development!"
+                })
+              }}
               containerStyles={`ml-5 rounded-md min-h-0 h-10 px-3 ${
                 !enrolled && "bg-transparent border border-secondary"
               }`}

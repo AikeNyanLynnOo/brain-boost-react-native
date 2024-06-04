@@ -1,13 +1,35 @@
+import { ACCESS_TOKEN_NAME, REFRESH_TOKEN_NAME } from "@env";
+
 import { Image, ScrollView, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { icons, images, styles } from "../constants";
 import CustomButton from "@/components/CustomButton";
 import Toast from "react-native-toast-message";
+import { getToken } from "../utils/tokenManager";
+import { useAuth } from "../hooks/isAuth";
 
 const Index = () => {
+  const { isAuthenticated, isLoading } = useAuth();
+  const [accessToken, setAccessToken] = useState<string | null>("");
+
+  // useEffect(() => {
+  //   getToken(ACCESS_TOKEN_NAME).then((token) =>
+  //     // console.log("Access token>>", token);
+  //     setAccessToken(token)
+  //   );
+  // });
+
+  // if (accessToken) {
+  //   return <Redirect href={"/home"} />;
+  // }
+
+  if (!isLoading && isAuthenticated) {
+    return <Redirect href={"/home"} />;
+  }
+
   return (
     <SafeAreaView className="h-full bg-primary">
       <ScrollView
@@ -55,7 +77,13 @@ const Index = () => {
           />
           <CustomButton
             title="Coninue with Google"
-            handlePress={() => {}}
+            handlePress={() => {
+              Toast.show({
+                type : "info",
+                text1 : "Upcoming feature...",
+                text2 : "Under development!"
+              });
+            }}
             containerStyles="w-full mt-5 bg-white"
             textStyles="text-secondary-200"
             icon={icons.google}
@@ -63,7 +91,7 @@ const Index = () => {
         </View>
       </ScrollView>
       <StatusBar backgroundColor={styles.colors.primary} style="light" />
-      <Toast />
+      <Toast position="bottom" visibilityTime={1500} bottomOffset={25} />
     </SafeAreaView>
   );
 };
