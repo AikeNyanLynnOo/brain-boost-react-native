@@ -1,4 +1,4 @@
-## Welcome to Omise Payment App 👋
+## Welcome to Brain Boost App 👋
 
 <p align="center">
 <image style="width:50%;height: auto; object-fit:cover;" src="https://github.com/AikeNyanLynnOo/payment-app-react-native/blob/main/assets/screen_record.gif?raw=true"/>
