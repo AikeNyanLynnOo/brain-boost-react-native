@@ -1,7 +1,7 @@
 ## Welcome to Brain Boost App 👋
 
 <p align="center">
-<image style="width:50%;height: auto; object-fit:cover;" src="https://github.com/AikeNyanLynnOo/payment-app-react-native/blob/main/assets/screen_record.gif?raw=true"/>
+<image style="width:50%;height: auto; object-fit:cover;" src="https://github.com/AikeNyanLynnOo/brain-boost-react-native/blob/main/assets/screen_record.gif?raw=true"/>
 </p>
 
 ### Features & Best Practice covered
