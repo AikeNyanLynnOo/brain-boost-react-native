@@ -1,50 +1,73 @@
-# Welcome to your Expo app 👋
+## Welcome to Omise Payment App 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p align="center">
+<image style="width:50%;height: auto; object-fit:cover;" src="https://github.com/AikeNyanLynnOo/payment-app-react-native/blob/main/assets/screen_record.gif?raw=true"/>
+</p>
 
-## Get started
+### Features & Best Practice covered
+
+- ✅ Expo status bar, expo-font, expo-splash-screen, expo-constants for easy-to-main exporting for fonts/images & styles
+- ✅ Expo Router, Tabs, Dynamic routes
+- ✅ NativeWind, TailwindCSS, React Native safe area context
+- ✅ Toast message with react-native-toast-message
+- ✅ Highly reusable components with custom stylings as props
+- ✅ Store sensitive data in .env and use react-native-dotenv to load envs
+- ✅ Implement custom hooks, use Context API for state management
+- ✅ Use Flatlist for better performance and Reusable Empty State Component
+- ✅ Clean UI/UX
+
+### To improve
+- Google authentication
+- To develop test cases
+
+### Run locally
 
 1. Install dependencies
 
    ```bash
-   npm install
+   $ npm install
    ```
 
 2. Start the app
 
    ```bash
-    npx expo start
+   $ npm run start
    ```
 
-In the output, you'll find options to open the app in a
+   OR
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   $ npm run no-cache
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Build production
 
-## Get a fresh project
+1. EAS login
 
-When you're ready, run:
+   ```bash
+   $ eas login
+   ```
 
-```bash
-npm run reset-project
-```
+2. Configure project
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+   ```bash
+   $ eas build:configure
+   ```
 
-## Learn more
+3. Build the project
 
-To learn more about developing your project with Expo, look at the following resources:
+   ```bash
+   $ eas build --platform android
+   ```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+   OR
 
-## Join the community
+   ```bash
+   $ eas build --platform ios
+   ```
 
-Join our community of developers creating universal apps.
+   OR
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+   ```bash
+   $ eas build --platform all
+   ```
